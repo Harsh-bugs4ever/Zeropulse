@@ -2,14 +2,17 @@ zerops:
   - setup: web
     build:
       base: nodejs@22
+      prepareCommands:
+        - apt-get install -y openssl libssl-dev
       buildCommands:
-        - cd zeropulse && npm install
+        - cd zeropulse && npm install --legacy-peer-deps
         - cd zeropulse && npx prisma generate --schema=packages/db/prisma/schema.prisma
-        - cd zeropulse && npm run build --workspace=apps/web
+        - cd zeropulse/apps/web && npx next build
       deployFiles:
         - zeropulse/apps/web/.next
         - zeropulse/apps/web/public
         - zeropulse/apps/web/package.json
+        - zeropulse/apps/web/next.config.ts
         - zeropulse/packages/db/prisma
         - zeropulse/node_modules
       cache:
@@ -33,11 +36,12 @@ zerops:
   - setup: worker
     build:
       base: nodejs@22
-    buildCommands:
-  - apt-get install -y openssl libssl-dev
-  - cd zeropulse && npm install --legacy-peer-deps
-  - cd zeropulse && npx prisma generate --schema=packages/db/prisma/schema.prisma
-  - cd zeropulse/apps/web && npx next build
+      prepareCommands:
+        - apt-get install -y openssl libssl-dev
+      buildCommands:
+        - cd zeropulse && npm install --legacy-peer-deps
+        - cd zeropulse && npx prisma generate --schema=packages/db/prisma/schema.prisma
+        - cd zeropulse/apps/worker && npx tsc
       deployFiles:
         - zeropulse/apps/worker/dist
         - zeropulse/apps/worker/package.json
