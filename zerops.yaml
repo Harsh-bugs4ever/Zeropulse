@@ -5,7 +5,7 @@ zerops:
       buildCommands:
         - cd zeropulse && npm install --legacy-peer-deps
         - cd zeropulse && npx prisma generate --schema=packages/db/prisma/schema.prisma
-        - cd zeropulse/apps/web && NEXT_PUBLIC_APP_URL=https://placeholder.zerops.app npx next build
+        - cd zeropulse/apps/web && NEXT_TELEMETRY_DISABLED=1 npx next build
       deployFiles:
         - zeropulse/apps/web/.next
         - zeropulse/apps/web/public
@@ -26,7 +26,7 @@ zerops:
         NODE_ENV: production
       initCommands:
         - cd zeropulse && npx prisma migrate deploy --schema=packages/db/prisma/schema.prisma
-      start: node zeropulse/node_modules/.bin/next start zeropulse/apps/web
+      start: node zeropulse/apps/web/.next/standalone/apps/web/server.js
 
   - setup: worker
     build:
