@@ -1,19 +1,20 @@
 zerops:
-  # ── Web (Next.js) ──────────────────────────────────────────────────────────
   - setup: web
     build:
       base: nodejs@22
       buildCommands:
-        - npm install
-        - npx prisma generate --schema=packages/db/prisma/schema.prisma
-        - npm run build --workspace=apps/web
+        - cd zeropulse && npm install
+        - cd zeropulse && npx prisma generate --schema=packages/db/prisma/schema.prisma
+        - cd zeropulse && npm run build --workspace=apps/web
       deployFiles:
-        - apps/web/.next
-        - apps/web/public
-        - apps/web/package.json
-        - apps/web/next.config.mjs
-        - packages/db/prisma
-        - node_modules
+        - zeropulse/apps/web/.next
+        - zeropulse/apps/web/public
+        - zeropulse/apps/web/package.json
+        - zeropulse/packages/db/prisma
+        - zeropulse/node_modules
+      cache:
+        - zeropulse/node_modules
+        - zeropulse/package-lock.json
     run:
       base: nodejs@22
       ports:
@@ -26,22 +27,24 @@ zerops:
         NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
         NODE_ENV: production
       initCommands:
-        - npx prisma migrate deploy --schema=packages/db/prisma/schema.prisma
-      start: node apps/web/node_modules/.bin/next start apps/web
+        - cd zeropulse && npx prisma migrate deploy --schema=packages/db/prisma/schema.prisma
+      start: node zeropulse/node_modules/.bin/next start zeropulse/apps/web
 
-  # ── Worker (BullMQ) ────────────────────────────────────────────────────────
   - setup: worker
     build:
       base: nodejs@22
       buildCommands:
-        - npm install
-        - npx prisma generate --schema=packages/db/prisma/schema.prisma
-        - npm run build --workspace=apps/worker
+        - cd zeropulse && npm install
+        - cd zeropulse && npx prisma generate --schema=packages/db/prisma/schema.prisma
+        - cd zeropulse && npm run build --workspace=apps/worker
       deployFiles:
-        - apps/worker/dist
-        - apps/worker/package.json
-        - packages/db/prisma
-        - node_modules
+        - zeropulse/apps/worker/dist
+        - zeropulse/apps/worker/package.json
+        - zeropulse/packages/db/prisma
+        - zeropulse/node_modules
+      cache:
+        - zeropulse/node_modules
+        - zeropulse/package-lock.json
     run:
       base: nodejs@22
       envVariables:
@@ -50,4 +53,4 @@ zerops:
         RESEND_API_KEY: ${RESEND_API_KEY}
         NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
         NODE_ENV: production
-      start: node apps/worker/dist/index.js
+      start: node zeropulse/apps/worker/dist/index.js
