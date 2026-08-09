@@ -24,7 +24,7 @@ zerops:
         NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
         NODE_ENV: production
       initCommands:
-        - cd zeropulse && npx prisma migrate deploy --schema=packages/db/prisma/schema.prisma
+        - cd zeropulse && npx prisma db push --schema=packages/db/prisma/schema.prisma --accept-data-loss
       start: node zeropulse/apps/web/.next/standalone/apps/web/server.js
 
   - setup: worker
