@@ -5,7 +5,7 @@ zerops:
       buildCommands:
         - cd zeropulse && npm install --legacy-peer-deps
         - cd zeropulse && npx prisma generate --schema=packages/db/prisma/schema.prisma
-        - cd zeropulse/apps/web && npx next build
+        - cd zeropulse/apps/web && NEXT_PUBLIC_APP_URL=https://placeholder.zerops.app npx next build
       deployFiles:
         - zeropulse/apps/web/.next
         - zeropulse/apps/web/public
@@ -13,9 +13,6 @@ zerops:
         - zeropulse/apps/web/next.config.ts
         - zeropulse/packages/db/prisma
         - zeropulse/node_modules
-      cache:
-        - zeropulse/node_modules
-        - zeropulse/package-lock.json
     run:
       base: nodejs@22
       ports:
@@ -43,9 +40,6 @@ zerops:
         - zeropulse/apps/worker/package.json
         - zeropulse/packages/db/prisma
         - zeropulse/node_modules
-      cache:
-        - zeropulse/node_modules
-        - zeropulse/package-lock.json
     run:
       base: nodejs@22
       envVariables:

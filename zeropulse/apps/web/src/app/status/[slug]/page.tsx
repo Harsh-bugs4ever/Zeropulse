@@ -3,7 +3,7 @@ import { prisma } from "@zeropulse/db";
 import { formatUptime, formatResponseTime, getUptimeColor, timeAgo } from "@/lib/utils";
 import { Activity, CheckCircle, XCircle, Zap } from "lucide-react";
 
-export const revalidate = 60; // ISR: revalidate every 60s
+export const dynamic = 'force-dynamic'; // ISR: revalidate every 60s
 
 interface Props {
   params: Promise<{ slug: string }>;
