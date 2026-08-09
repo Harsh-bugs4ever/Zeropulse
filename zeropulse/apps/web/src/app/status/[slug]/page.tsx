@@ -36,8 +36,13 @@ export default async function StatusPage({ params }: Props) {
   const dayAgo  = new Date(now.getTime() - 24 * 60 * 60 * 1000);
   const weekAgo = new Date(now.getTime() - 7  * 24 * 60 * 60 * 1000);
 
-  const [recentChecks, dayChecks, weekChecks, ongoingIncident] =
-    await Promise.all([
+  let recentChecks: any[] = [];
+  let dayChecks: any[] = [];
+  let weekChecks: any[] = [];
+  let ongoingIncident: any = null;
+
+  try {
+    const res = await Promise.all([
       prisma.check.findMany({
         where: { monitorId: monitor.id },
         orderBy: { checkedAt: "desc" },
@@ -56,6 +61,13 @@ export default async function StatusPage({ params }: Props) {
         where: { monitorId: monitor.id, isOngoing: true },
       }),
     ]);
+    recentChecks = res[0];
+    dayChecks = res[1];
+    weekChecks = res[2];
+    ongoingIncident = res[3];
+  } catch (e) {
+    console.error("Failed to fetch checks/incidents:", e);
+  }
 
   const lastCheck = recentChecks[0];
   const isUp      = lastCheck?.isUp ?? false;

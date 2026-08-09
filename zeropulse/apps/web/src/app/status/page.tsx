@@ -3,7 +3,7 @@ import { formatUptime, getUptimeColor, timeAgo } from "@/lib/utils";
 import { Activity, CheckCircle, XCircle, Zap, Globe, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Status Overview — ZeroPulse",
@@ -11,21 +11,26 @@ export const metadata = {
 };
 
 export default async function StatusOverviewPage() {
-  const monitors = await prisma.monitor.findMany({
-    where: { isActive: true },
-    orderBy: { createdAt: "desc" },
-    include: {
-      checks: {
-        orderBy: { checkedAt: "desc" },
-        take: 1,
-        select: { isUp: true, checkedAt: true, responseTimeMs: true },
+  let monitors: any[] = [];
+  try {
+    monitors = await prisma.monitor.findMany({
+      where: { isActive: true },
+      orderBy: { createdAt: "desc" },
+      include: {
+        checks: {
+          orderBy: { checkedAt: "desc" },
+          take: 1,
+          select: { isUp: true, checkedAt: true, responseTimeMs: true },
+        },
+        incidents: {
+          where: { isOngoing: true },
+          take: 1,
+        },
       },
-      incidents: {
-        where: { isOngoing: true },
-        take: 1,
-      },
-    },
-  });
+    });
+  } catch (e) {
+    console.error("Failed to fetch monitors on /status:", e);
+  }
 
   const now = new Date();
   const dayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
