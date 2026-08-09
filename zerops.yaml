@@ -23,9 +23,7 @@ zerops:
         RESEND_API_KEY: ${RESEND_API_KEY}
         NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
         NODE_ENV: production
-      initCommands:
-        - cd zeropulse && npx prisma db push --schema=packages/db/prisma/schema.prisma --accept-data-loss
-      start: node zeropulse/apps/web/.next/standalone/apps/web/server.js
+      start: npx prisma db push --schema=zeropulse/packages/db/prisma/schema.prisma --accept-data-loss && node zeropulse/apps/web/.next/standalone/apps/web/server.js
 
   - setup: worker
     build:
