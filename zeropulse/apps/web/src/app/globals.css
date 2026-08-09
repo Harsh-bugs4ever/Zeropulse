@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: #080C14;
+    color: #E2E8F4;
+    font-family: 'Geist', system-ui, sans-serif;
+    min-height: 100vh;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track  { background: #080C14; }
+  ::-webkit-scrollbar-thumb  { background: #1A2235; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #00D4FF44; }
+
+  ::selection {
+    background: rgba(0, 212, 255, 0.2);
+    color: #E2E8F4;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-pulse-surface border border-pulse-border rounded-xl shadow-card;
+  }
+
+  .btn-primary {
+    @apply bg-pulse-cyan text-pulse-bg font-semibold px-4 py-2 rounded-lg text-sm
+           hover:bg-opacity-90 transition-all duration-150 active:scale-95
+           shadow-cyan-glow;
+  }
+
+  .btn-ghost {
+    @apply border border-pulse-border text-pulse-muted2 px-4 py-2 rounded-lg text-sm
+           hover:border-pulse-cyan hover:text-pulse-cyan transition-all duration-150;
+  }
+
+  .stat-label {
+    @apply text-xs font-mono text-pulse-muted2 uppercase tracking-widest;
+  }
+
+  .stat-value {
+    @apply text-2xl font-mono font-semibold text-pulse-text;
+  }
+
+  .badge-up {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-medium
+           bg-pulse-green-dim text-pulse-green border border-pulse-green border-opacity-20;
+  }
+
+  .badge-down {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-medium
+           bg-pulse-red-dim text-pulse-red border border-pulse-red border-opacity-20;
+  }
+
+  .badge-unknown {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-medium
+           bg-pulse-muted text-pulse-muted2 border border-pulse-border;
+  }
+
+  .input {
+    @apply w-full bg-pulse-bg border border-pulse-border rounded-lg px-3 py-2.5 text-sm
+           text-pulse-text placeholder:text-pulse-dim
+           focus:outline-none focus:border-pulse-cyan focus:ring-1 focus:ring-pulse-cyan focus:ring-opacity-30
+           transition-colors duration-150 font-mono;
+  }
+}
+
+/* Pulse dot animation */
+.pulse-dot {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: pulse_ring 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.pulse-dot.up { background: #00FF88; }
+.pulse-dot.up::after { background: #00FF88; }
+
+.pulse-dot.down { background: #FF4466; }
+.pulse-dot.down::after { background: #FF4466; }
+
+.pulse-dot.unknown { background: #3A4A60; }
+.pulse-dot.unknown::after { display: none; }
+
+/* Grid background */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Uptime bar */
+.uptime-bar-segment {
+  flex: 1;
+  height: 28px;
+  border-radius: 2px;
+  transition: transform 0.1s ease;
+}
+.uptime-bar-segment:hover {
+  transform: scaleY(1.3);
+}

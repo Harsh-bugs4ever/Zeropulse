@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: zeropulse-db
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: zeropulse
+      POSTGRES_PASSWORD: zeropulse
+      POSTGRES_DB: zeropulse
+    volumes:
+      - zeropulse_pg_data:/var/lib/postgresql/data
+
+  cache:
+    image: valkey/valkey:8-alpine
+    container_name: zeropulse-cache
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - zeropulse_valkey_data:/data
+
+volumes:
+  zeropulse_pg_data:
+  zeropulse_valkey_data:
