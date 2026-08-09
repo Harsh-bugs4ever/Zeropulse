@@ -2,8 +2,6 @@ zerops:
   - setup: web
     build:
       base: nodejs@22
-      prepareCommands:
-        - apt-get install -y openssl libssl-dev
       buildCommands:
         - cd zeropulse && npm install --legacy-peer-deps
         - cd zeropulse && npx prisma generate --schema=packages/db/prisma/schema.prisma
@@ -36,8 +34,6 @@ zerops:
   - setup: worker
     build:
       base: nodejs@22
-      prepareCommands:
-        - apt-get install -y openssl libssl-dev
       buildCommands:
         - cd zeropulse && npm install --legacy-peer-deps
         - cd zeropulse && npx prisma generate --schema=packages/db/prisma/schema.prisma
