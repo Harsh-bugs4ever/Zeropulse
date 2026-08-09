@@ -8,7 +8,6 @@ zerops:
         - cd zeropulse/apps/web && NEXT_TELEMETRY_DISABLED=1 npx next build
       deployFiles:
         - zeropulse/apps/web/.next
-        - zeropulse/apps/web/public
         - zeropulse/apps/web/package.json
         - zeropulse/apps/web/next.config.ts
         - zeropulse/packages/db/prisma
